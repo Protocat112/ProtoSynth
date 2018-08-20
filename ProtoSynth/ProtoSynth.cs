@@ -12,16 +12,17 @@ namespace ProtoSynth
             Play,
 
         };
-        private static UserInterfaceForm userInterfaceForm;
         private const int SAMPLE_RATE = 44100;
         private const int BIT_DEPTH = 16;
         private const int CHANNELS = 2;
+        private static UserInterfaceForm UserInterfaceForm;
+        private static WaveStream WaveStream;
 
         internal static void Run()
         {
             // start user interface thread
             EventWaitHandle userEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            userInterfaceForm = new UserInterfaceForm(userEventWaitHandle);
+            UserInterfaceForm = new UserInterfaceForm(userEventWaitHandle);
             Thread userInterfaceThread = new Thread(RunUserInterfaceForm);
             UserEvent userEvent = UserEvent.Unset;
             bool exit = false;
@@ -44,15 +45,14 @@ namespace ProtoSynth
 
         private static void RunUserInterfaceForm()
         {
-            Application.Run(userInterfaceForm);
+            Application.Run(UserInterfaceForm);
         }
 
         private static void Play()
         {
-            WaveStream waveStream = new WaveStream(SAMPLE_RATE, BIT_DEPTH, CHANNELS);
-            //BlockAlignReductionStream stream = new BlockAlignReductionStream(waveStream);
+            WaveStream = new WaveStream(SAMPLE_RATE, BIT_DEPTH, CHANNELS);
             DirectSoundOut output = new DirectSoundOut();
-            output.Init(waveStream);
+            output.Init(WaveStream);
             output.Play();
         }
     }
