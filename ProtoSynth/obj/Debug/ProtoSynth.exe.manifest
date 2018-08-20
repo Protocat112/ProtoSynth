@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProtoSynth.exe" size="24560">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProtoSynth.exe" size="23552">
       <assemblyIdentity name="ProtoSynth" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>16vyfKb9/xK6o6CuYt3GdcXjAw6cxTFpHr96g4F9SDE=</dsig:DigestValue>
+        <dsig:DigestValue>zxVSlwqKd/MOxMtsTv8FY7V5+uNVAHo7US68xg9IBYI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

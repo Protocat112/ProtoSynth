@@ -16,7 +16,7 @@ namespace ProtoSynth
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ProtoSynthForm());
+            ProtoSynth.Run();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ProtoSynth
 {
-    partial class ProtoSynthForm
+    partial class UserInterfaceForm
     {
         /// <summary>
         /// Required designer variable.
