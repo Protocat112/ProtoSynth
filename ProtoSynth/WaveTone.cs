@@ -7,151 +7,119 @@ namespace ProtoSynth
     //note output
     public class WaveTone
     {
-        internal WaveToneProperties waveToneProperties;
+        public WaveToneProperties Wtp { get; }
         private Osc osc0;
         private Osc osc1;
         private Osc osc2;
         private Osc oscLeft;
         private Osc oscRight;
-        private List<byte> data;
-        private double left;
-        private double right;
 
-        public WaveTone(int sampleRate)
+        public WaveTone(WaveToneProperties waveToneProperties)
         {
-            waveToneProperties = new WaveToneProperties(sampleRate);
-            data = new List<byte>();
-            //this.dist = dist * 0.9;
-            osc0 = new Osc(sampleRate, frequency, amplitude, env, waveType);
-            if (phase > 0)
+            Wtp = waveToneProperties;
+            osc0 = new Osc(
+                Wtp.Wsp.SampleRate,
+                Wtp.Frequency,
+                Wtp.Amplitude,
+                Wtp.Wsp.Envelope,
+                Wtp.Wsp.WaveType);
+            if (Wtp.Wsp.Phase > 0)
             {
-                oscLeft = new Osc(sampleRate, frequency + phase / 100, amplitude, env, waveType);
-                oscRight = new Osc(sampleRate, frequency - phase / 100, amplitude, env, waveType);
+                oscLeft = new Osc(
+                    Wtp.Wsp.SampleRate,
+                    Wtp.Frequency + Wtp.Wsp.Phase / 100,
+                    Wtp.Amplitude,
+                    Wtp.Wsp.Envelope,
+                    Wtp.Wsp.WaveType);
+                oscRight = new Osc(
+                    Wtp.Wsp.SampleRate,
+                    Wtp.Frequency - Wtp.Wsp.Phase / 100,
+                    Wtp.Amplitude,
+                    Wtp.Wsp.Envelope,
+                    Wtp.Wsp.WaveType);
             }
-            if (multi > 0)
+            if (Wtp.Wsp.Multi > 0)
             {
-                osc1 = new Osc(sampleRate, frequency * ((15 + (multi / 100)) / 15), amplitude, env, waveType);
-                osc2 = new Osc(sampleRate, frequency * ((16 - (multi / 100)) / 16), amplitude, env, waveType);
-            }
-        }
-
-        public override long Position
-        {
-            get;
-            set;
-        }
-
-        public override long Length
-        {
-            get
-            {
-                return long.MaxValue;
-            }
-        }
-
-        public override WaveFormat WaveFormat
-        {
-            get
-            {
-                return new WaveFormat(44100, 16, 2);
+                osc1 = new Osc(
+                    Wtp.Wsp.SampleRate,
+                    Wtp.Frequency * ((15 + (Wtp.Wsp.Phase / 100)) / 15),
+                    Wtp.Amplitude,
+                    Wtp.Wsp.Envelope,
+                    Wtp.Wsp.WaveType);
+                osc2 = new Osc(
+                    Wtp.Wsp.SampleRate,
+                    Wtp.Frequency * ((16 - (Wtp.Wsp.Phase / 100)) / 16),
+                    Wtp.Amplitude,
+                    Wtp.Wsp.Envelope,
+                    Wtp.Wsp.WaveType);
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public StereoSample GetNextSample(int sampleNumber)
         {
-            double value = 0;
-            int samples = count / 2;
-            for (int i = 0; i < samples; i += 2)
+            double center = 0;
+            center = osc0.GetNextSample(sampleNumber);
+            if (Wtp.Wsp.Multi > 0)
             {
-                value = osc0.GetNextSample(sampleNumber);
-                if (multi > 0)
-                {
-                    value = (value + osc1.GetNextSample(sampleNumber) + osc2.GetNextSample(sampleNumber)) / 3;
-                }
-                if (phase > 0)
-                {
-                    left = (value + oscLeft.GetNextSample(sampleNumber)) / 2;
-                    right = (value + oscRight.GetNextSample(sampleNumber)) / 2;
-                }
-                else
-                {
-                    left = value;
-                    right = value;
-                }
-                if (left > amplitude * (1 - dist))
-                {
-                    left = amplitude * (1 - dist);
-                }
-                else if (left < amplitude * (dist - 1))
-                {
-                    left = amplitude * (dist - 1);
-                }
-                left = left * (1 / (1 - dist));
-                if (right > amplitude * (1 - dist))
-                {
-                    right = amplitude * (1 - dist);
-                }
-                else if (right < amplitude * (dist - 1))
-                {
-                    right = amplitude * (dist - 1);
-                }
-                right = right * (1 / (1 - dist));
-                form.Draw(sampleNumber, left, right);
-                sampleNumber++;
-                ConvertToByte(buffer, i, left, right, write);
-            } 
-            return count;
-        }
-
-        public void ConvertToByte(byte[] buffer, int i, double left, double right, bool write)
-        {
-            short leftShort = (short)Math.Round(left * (Math.Pow(2, 15) - 1));
-            short rightShort = (short)Math.Round(right * (Math.Pow(2, 15) - 1));
-            buffer[i * 2] = (byte)(leftShort & 0x00ff);
-            buffer[i * 2 + 1] = (byte)((leftShort & 0xff00) >> 8);
-            buffer[i * 2 + 2] = (byte)(rightShort & 0x00ff);
-            buffer[i * 2 + 3] = (byte)((rightShort & 0xff00) >> 8);
-            if (write)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    data.Add(buffer[i * 2 + j]);
-                }
+                center = (center + osc1.GetNextSample(sampleNumber) + osc2.GetNextSample(sampleNumber)) / 3;
             }
-        }
-
-        public List<byte> getData()
-        {
-            byte[] buffer = new byte[sampleRate * 4];
-            Read(buffer, 0, sampleRate * 4);
-            return data;
+            double left;
+            double right;
+            if (Wtp.Wsp.Phase > 0)
+            {
+                left = (center + oscLeft.GetNextSample(sampleNumber)) / 2;
+                right = (center + oscRight.GetNextSample(sampleNumber)) / 2;
+            }
+            else
+            {
+                left = center;
+                right = center;
+            }
+            if (left > Wtp.Amplitude * (1 - Wtp.Wsp.Distortion))
+            {
+                left = Wtp.Amplitude * (1 - Wtp.Wsp.Distortion);
+            }
+            else if (left < Wtp.Amplitude * (Wtp.Wsp.Distortion - 1))
+            {
+                left = Wtp.Amplitude * (Wtp.Wsp.Distortion - 1);
+            }
+            left = left * (1 / (1 - Wtp.Wsp.Distortion));
+            if (right > Wtp.Amplitude * (1 - Wtp.Wsp.Distortion))
+            {
+                right = Wtp.Amplitude * (1 - Wtp.Wsp.Distortion);
+            }
+            else if (right < Wtp.Amplitude * (Wtp.Wsp.Distortion - 1))
+            {
+                right = Wtp.Amplitude * (Wtp.Wsp.Distortion - 1);
+            }
+            right = right * (1 / (1 - Wtp.Wsp.Distortion));
+            return new StereoSample(left, right);
         }
 
         public void Retrigger()
         {
-            sampleNumber = 0;
             osc0.Retrigger();
-            if (phase > 0)
+            if (Wtp.Wsp.Phase > 0)
             {
                 oscLeft.Retrigger();
                 oscRight.Retrigger();
             }
-            if (multi > 0)
+            if (Wtp.Wsp.Multi > 0)
             {
                 osc1.Retrigger();
                 osc2.Retrigger();
             }
         }
 
-        public void Release()
+        public void Release(int sampleNumber)
         {
             osc0.Release(sampleNumber);
-            if (phase > 0)
+            if (Wtp.Wsp.Phase > 0)
             {
                 oscLeft.Release(sampleNumber);
                 oscRight.Release(sampleNumber);
             }
-            if (multi > 0)
+            if (Wtp.Wsp.Multi > 0)
             {
                 osc1.Release(sampleNumber);
                 osc2.Release(sampleNumber);

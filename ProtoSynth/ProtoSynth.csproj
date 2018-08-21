@@ -81,6 +81,7 @@
     <Compile Include="Envelope.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="Osc.cs" />
+    <Compile Include="StereoSample.cs" />
     <Compile Include="WaveStream.cs" />
     <Compile Include="WaveTone.cs" />
     <Compile Include="WaveStreamProperties.cs" />

@@ -10,13 +10,15 @@ namespace ProtoSynth
         public enum UserEvent {
             Unset,
             Play,
-
+            SetRecord,
+            UnsetRecord
         };
         private const int SAMPLE_RATE = 44100;
         private const int BIT_DEPTH = 16;
         private const int CHANNELS = 2;
-        private static UserInterfaceForm UserInterfaceForm;
-        private static WaveStream WaveStream;
+        private static UserInterfaceForm userInterfaceForm;
+        private static WaveStream waveStream;
+        private static bool record;
 
         internal static void Run()
         {
@@ -39,6 +41,9 @@ namespace ProtoSynth
                     case UserEvent.Play:
                         Play();
                         break;
+                    case UserEvent.SetRecord:
+                        ();
+                        break;
                 }
             }
         }
@@ -50,9 +55,16 @@ namespace ProtoSynth
 
         private static void Play()
         {
-            WaveStream = new WaveStream(SAMPLE_RATE, BIT_DEPTH, CHANNELS);
+            waveStream = new WaveStream(
+                new WaveStreamProperties(
+                    SAMPLE_RATE,
+                    BIT_DEPTH,
+                    CHANNELS,
+                    userInterfaceForm.),
+                UserInterfaceForm,
+                record);
             DirectSoundOut output = new DirectSoundOut();
-            output.Init(WaveStream);
+            output.Init(waveStream);
             output.Play();
         }
     }

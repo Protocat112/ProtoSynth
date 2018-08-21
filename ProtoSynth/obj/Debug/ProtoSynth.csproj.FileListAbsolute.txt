@@ -45,3 +45,4 @@ C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\NAudio.xml
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.exe.manifest
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.application
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.CopyComplete
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.UserInterfaceForm.resources

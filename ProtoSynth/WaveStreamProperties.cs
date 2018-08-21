@@ -1,17 +1,31 @@
 ﻿namespace ProtoSynth
 {
-    class WaveStreamProperties
+    public struct WaveStreamProperties
     {
-        private readonly int sampleRate;
-        private readonly int channels;
-        private readonly int bitDepth;
-        private double Multi { get; set; }
-        private double Phase { get; set; }
-        private Envelope Env { get; set; }
+        public int SampleRate { get; }
+        public int Channels { get; }
+        public int BitDepth { get; }
+        public double Multi { get; set; }
+        public double Phase { get; set; }
+        public Envelope Envelope { get; set; }
+        public WaveTypes WaveType { get; set; }
 
-        public WaveStreamProperties(int sampleRate)
+        public WaveStreamProperties(
+            int sampleRate,
+            int channels,
+            int bitDepth,
+            double multi,
+            double phase,
+            Envelope envelope,
+            WaveTypes waveType)
         {
-            this.sampleRate = sampleRate;
+            SampleRate = sampleRate;
+            Channels = channels;
+            BitDepth = bitDepth;
+            Multi = multi;
+            Phase = phase;
+            Envelope = envelope;
+            WaveType = waveType;
         }
     }
 }

@@ -14,20 +14,19 @@ namespace ProtoSynth
     {
         //[DllImport("winmm.dll")]
         // private static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
-
         public const int sampleRate = 44100;
         public const int envScale = 100;
-        private int phase;
-        private double frequency;
-        private double amplitude;
+        public int Phase;
+        public double Frequency;
+        public double Amplitude;
         private DirectSoundOut output;
         private BlockAlignReductionStream stream;
         private bool play;
-        private WaveTypes waveType;
-        private int multi;
-        private Envelope env;
+        public WaveTypes WaveType;
+        public int Multi;
+        public Envelope Envelope;
         private WaveStream tone;
-        private double dist;
+        public double Distortion;
         private int sampleNumber;
         private int[] pointsLeft;
         private int[] pointsLeftTemp;
@@ -45,14 +44,14 @@ namespace ProtoSynth
             {
                 boxWaveType.Items.Add(waveType);
             }
-            amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
-            frequency = Convert.ToDouble(txtFrequency.Text);
+            Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
+            Frequency = Convert.ToDouble(txtFrequency.Text);
             output = null;
             stream = null;
             play = false;
-            multi = barMulti.Value;
-            env = new Envelope(barAttack.Value * sampleRate / envScale, barDecay.Value * sampleRate / envScale, (double)barSustain.Value / barSustain.Maximum, barRelease.Value * sampleRate / envScale);
-            dist = ((double)barDist.Value)/barDist.Maximum;
+            Multi = barMulti.Value;
+            Envelope = new Envelope(barAttack.Value * sampleRate / envScale, barDecay.Value * sampleRate / envScale, (double)barSustain.Value / barSustain.Maximum, barRelease.Value * sampleRate / envScale);
+            Distortion = ((double)barDist.Value)/barDist.Maximum;
             pointsLeft = new int[panWave.Width];
             pointsLeftTemp = new int[panWave.Width];
             pointsRight = new int[panWave.Width];
@@ -75,7 +74,7 @@ namespace ProtoSynth
 
         private void barVolume_ValueChanged(object sender, EventArgs e)
         {
-            amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
+            Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
         }
 
         private void btnSineBuffer_Click(object sender, EventArgs e)
@@ -113,7 +112,7 @@ namespace ProtoSynth
             {
                 if (waveType.ToString() == boxWaveType.Text)
                 {
-                    this.waveType = waveType;
+                    this.WaveType = waveType;
                 }
             }
         }
@@ -125,39 +124,39 @@ namespace ProtoSynth
                 stop();
             }
             List<byte> data = new List<byte>();
-            tone = new WaveStream(this, frequency, amplitude, waveType, sampleRate, phase, multi, true, env, dist);
-            data = tone.getData();
+            tone = new WaveStream(this, Frequency, Amplitude, WaveType, sampleRate, Phase, Multi, true, Envelope, Distortion);
+            data = tone.GetData();
             FileWriter fileWriter = new FileWriter(data.ToArray(), sampleRate, sampleRate);
         }
 
         private void barMulti_Scroll(object sender, EventArgs e)
         {
-            multi = barMulti.Value;
+            Multi = barMulti.Value;
         }
 
         private void barPhase_Scroll(object sender, EventArgs e)
         {
-            phase = barPhase.Value;
+            Phase = barPhase.Value;
         }
 
         private void barAttack_Scroll(object sender, EventArgs e)
         {
-            env.attack = barAttack.Value * sampleRate / envScale;
+            Envelope.attack = barAttack.Value * sampleRate / envScale;
         }
 
         private void barDecay_Scroll(object sender, EventArgs e)
         {
-            env.decay = barDecay.Value * sampleRate / envScale;
+            Envelope.decay = barDecay.Value * sampleRate / envScale;
         }
 
         private void barSustain_Scroll(object sender, EventArgs e)
         {
-            env.sustain = (double)barSustain.Value / barSustain.Maximum;
+            Envelope.sustain = (double)barSustain.Value / barSustain.Maximum;
         }
 
         private void barRelease_Scroll(object sender, EventArgs e)
         {
-            env.release = barRelease.Value * sampleRate / envScale;
+            Envelope.release = barRelease.Value * sampleRate / envScale;
         }
 
         private void btnRetrigger_Click(object sender, EventArgs e)
@@ -187,7 +186,7 @@ namespace ProtoSynth
 
         private void barDist_Scroll(object sender, EventArgs e)
         {
-            dist = (double)barDist.Value / barDist.Maximum;
+            Distortion = (double)barDist.Value / barDist.Maximum;
         }
 
         public void Draw(int sampleNumber, double left, double right)

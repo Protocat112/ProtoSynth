@@ -1,15 +1,19 @@
 ﻿namespace ProtoSynth
 {
-    class WaveToneProperties
+    public struct WaveToneProperties
     {
-        private readonly int sampleRate;
-        private double Frequency { get; set; }
-        private double Amplitude { get; set; }
-        private WaveTypes WaveType { get; set; }
+        public WaveStreamProperties Wsp { get; }
+        public double Frequency { get; set; }
+        public double Amplitude { get; set; }
 
-        public WaveToneProperties(int sampleRate)
+        public WaveToneProperties(
+            WaveStreamProperties wsp,
+            double frequency,
+            double amplitude)
         {
-            this.sampleRate = sampleRate;
+            Wsp = wsp;
+            Frequency = frequency;
+            Amplitude = amplitude;
         }
     }
 }
