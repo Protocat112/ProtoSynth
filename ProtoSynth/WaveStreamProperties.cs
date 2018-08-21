@@ -9,6 +9,7 @@
         public double Phase { get; set; }
         public Envelope Envelope { get; set; }
         public WaveTypes WaveType { get; set; }
+        public double Distortion { get; set; }
 
         public WaveStreamProperties(
             int sampleRate,
@@ -17,7 +18,8 @@
             double multi,
             double phase,
             Envelope envelope,
-            WaveTypes waveType)
+            WaveTypes waveType, 
+            double distortion)
         {
             SampleRate = sampleRate;
             Channels = channels;
@@ -26,6 +28,7 @@
             Phase = phase;
             Envelope = envelope;
             WaveType = waveType;
+            Distortion = distortion;
         }
     }
 }

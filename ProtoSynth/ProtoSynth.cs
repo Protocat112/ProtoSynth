@@ -42,15 +42,28 @@ namespace ProtoSynth
                         Play();
                         break;
                     case UserEvent.SetRecord:
-                        ();
+                        SetRecord();
+                        break;
+                    case UserEvent.UnsetRecord:
+                        UnsetRecord();
                         break;
                 }
             }
         }
 
+        private static void UnsetRecord()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void SetRecord()
+        {
+            record = true;
+        }
+
         private static void RunUserInterfaceForm()
         {
-            Application.Run(UserInterfaceForm);
+            record = false;
         }
 
         private static void Play()
@@ -60,8 +73,12 @@ namespace ProtoSynth
                     SAMPLE_RATE,
                     BIT_DEPTH,
                     CHANNELS,
-                    userInterfaceForm.),
-                UserInterfaceForm,
+                    userInterfaceForm.Multi,
+                    userInterfaceForm.Phase,
+                    userInterfaceForm.Envelope,
+                    userInterfaceForm.WaveType,
+                    userInterfaceForm.Distortion),
+                userInterfaceForm,
                 record);
             DirectSoundOut output = new DirectSoundOut();
             output.Init(waveStream);
