@@ -395,6 +395,7 @@
             this.Controls.Add(this.lblFrequency);
             this.Name = "UserInterfaceForm";
             this.Text = "ProtoSynth";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserInterfaceForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.barVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barMulti)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barPhase)).EndInit();

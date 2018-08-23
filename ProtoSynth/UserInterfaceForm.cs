@@ -21,7 +21,7 @@ namespace ProtoSynth
         public double Amplitude;
         private DirectSoundOut output;
         private BlockAlignReductionStream stream;
-        private bool play;
+        private bool playing;
         public WaveTypes WaveType;
         public int Multi;
         public Envelope Envelope;
@@ -35,7 +35,7 @@ namespace ProtoSynth
         private bool painting;
         private int offset;
         private EventWaitHandle userEventWaitHandle;
-        public bool record;
+        public bool Record;
         public bool SingleTone;
 
         internal UserInterfaceForm(EventWaitHandle userEventWaitHandle, ConstantProperties cp)
@@ -47,10 +47,11 @@ namespace ProtoSynth
             {
                 boxWaveType.Items.Add(waveType);
             }
+            Frequency = Convert.ToDouble(txtFrequency.Text);
             Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
             output = null;
             stream = null;
-            play = false;
+            playing = false;
             Multi = barMulti.Value;
             Envelope = new Envelope(
                 barAttack.Value * cp.SampleRate / envScale,
@@ -83,7 +84,7 @@ namespace ProtoSynth
 
         private void btnSineBuffer_Click(object sender, EventArgs e)
         {
-            if (play)
+            if (playing)
             {
                 stop();
             }
@@ -93,6 +94,7 @@ namespace ProtoSynth
                 userEventWaitHandle.Set();
                 btnSineBuffer.FlatStyle = FlatStyle.Flat;
                 btnSineBuffer.Text = "Pause";
+                playing = true;
             }
         }
 
@@ -175,7 +177,7 @@ namespace ProtoSynth
 
         private void btnRetrigger_Click(object sender, EventArgs e)
         {
-            if (play)
+            if (playing)
             {
                 tone.Retrigger();
             }
@@ -185,14 +187,14 @@ namespace ProtoSynth
         {
             offset = 0;
             output.Stop();
-            play = false;
+            playing = false;
             btnSineBuffer.FlatStyle = FlatStyle.Standard;
             btnSineBuffer.Text = "Play";
         }
 
         private void btnRelease_Click(object sender, EventArgs e)
         {
-            if (play)
+            if (playing)
             {
                 tone.Release();
             }
@@ -240,6 +242,12 @@ namespace ProtoSynth
         private void chkTone_CheckedChanged(object sender, EventArgs e)
         {
             SingleTone = chkTone.Checked;
+        }
+
+        private void UserInterfaceForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ProtoSynth.Ue = UserEvent.Close;
+            userEventWaitHandle.Set();
         }
     }
 }

@@ -16,14 +16,12 @@ namespace ProtoSynth
             SetRecord,
             UnsetRecord,
             SetTone,
-            UnsetTone
+            UnsetTone,
+            Close
         };
         private static UserInterfaceForm userInterfaceForm;
         private static WaveStream waveStream;
-        private static bool record;
-        private static bool tone;
-        private static bool toneFrequency;
-        private static bool toneAmplitude;
+        private static bool exit;
         public static UserEvent Ue;
 
         internal static void Run()
@@ -32,9 +30,9 @@ namespace ProtoSynth
             EventWaitHandle userEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             userInterfaceForm = new UserInterfaceForm(userEventWaitHandle, new ConstantProperties(SAMPLE_RATE, BIT_DEPTH, CHANNELS));
             Thread userInterfaceThread = new Thread(RunUserInterfaceForm);
-            Ue = UserEvent.Unset;
-            bool exit = false;
             userInterfaceThread.Start();
+            Ue = UserEvent.Unset;
+            exit = false;
             // event loop
             while (!exit)
             {
@@ -47,46 +45,22 @@ namespace ProtoSynth
                     case UserEvent.Play:
                         Play();
                         break;
-                    case UserEvent.SetRecord:
-                        SetRecord();
-                        break;
-                    case UserEvent.UnsetRecord:
-                        UnsetRecord();
-                        break;
-                    case UserEvent.SetTone:
-                        SetTone();
-                        break;
-                    case UserEvent.UnsetTone:
-                        UnsetTone();
+                    case UserEvent.Close:
+                        Close();
                         break;
                 }
             }
         }
 
-        private static void UnsetTone()
+        private static void Close()
         {
-            tone = false;
-        }
-
-        private static void SetTone()
-        {
-            tone = true;
-        }
-
-        private static void UnsetRecord()
-        {
-            record = false;
-        }
-
-        private static void SetRecord()
-        {
-            record = true;
+            exit = true;
         }
 
         private static void RunUserInterfaceForm()
         {
             Application.Run(userInterfaceForm);
-            record = false;
+            userInterfaceForm.Record = false;
         }
 
         private static void Play()
@@ -100,18 +74,13 @@ namespace ProtoSynth
                     userInterfaceForm.WaveType,
                     userInterfaceForm.Distortion),
                 userInterfaceForm,
-                record,
-                tone,
+                userInterfaceForm.Record,
+                userInterfaceForm.SingleTone,
                 userInterfaceForm.Frequency,
                 userInterfaceForm.Amplitude);
             DirectSoundOut output = new DirectSoundOut();
             output.Init(waveStream);
             output.Play();
-        }
-
-        internal static void UpdateFrequency(double frequency)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace ProtoSynth
         private int sampleNumber;
         private UserInterfaceForm userInterfaceForm;
         private readonly bool record;
-        private bool tone;
 
         public WaveStream(
             WaveStreamProperties wsp,
