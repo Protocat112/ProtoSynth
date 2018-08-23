@@ -18,7 +18,7 @@ namespace ProtoSynth
         {
             Wtp = waveToneProperties;
             osc0 = new Osc(
-                Wtp.Wsp.SampleRate,
+                Wtp.Wsp.Cp.SampleRate,
                 Wtp.Frequency,
                 Wtp.Amplitude,
                 Wtp.Wsp.Envelope,
@@ -26,13 +26,13 @@ namespace ProtoSynth
             if (Wtp.Wsp.Phase > 0)
             {
                 oscLeft = new Osc(
-                    Wtp.Wsp.SampleRate,
+                    Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency + Wtp.Wsp.Phase / 100,
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,
                     Wtp.Wsp.WaveType);
                 oscRight = new Osc(
-                    Wtp.Wsp.SampleRate,
+                    Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency - Wtp.Wsp.Phase / 100,
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,
@@ -41,13 +41,13 @@ namespace ProtoSynth
             if (Wtp.Wsp.Multi > 0)
             {
                 osc1 = new Osc(
-                    Wtp.Wsp.SampleRate,
+                    Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency * ((15 + (Wtp.Wsp.Phase / 100)) / 15),
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,
                     Wtp.Wsp.WaveType);
                 osc2 = new Osc(
-                    Wtp.Wsp.SampleRate,
+                    Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency * ((16 - (Wtp.Wsp.Phase / 100)) / 16),
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,

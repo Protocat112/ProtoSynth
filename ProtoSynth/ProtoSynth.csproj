@@ -85,6 +85,7 @@
     <Compile Include="WaveStream.cs" />
     <Compile Include="WaveTone.cs" />
     <Compile Include="WaveStreamProperties.cs" />
+    <Compile Include="ConstantProperties.cs" />
     <Compile Include="WaveToneProperties.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProtoSynth.cs" />

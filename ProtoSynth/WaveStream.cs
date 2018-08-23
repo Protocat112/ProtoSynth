@@ -13,12 +13,30 @@ namespace ProtoSynth
         private int sampleNumber;
         private UserInterfaceForm userInterfaceForm;
         private readonly bool record;
+        private bool tone;
 
-        public WaveStream(WaveStreamProperties wsp, UserInterfaceForm userInterfaceForm, bool record)
+        public WaveStream(
+            WaveStreamProperties wsp,
+            UserInterfaceForm userInterfaceForm,
+            bool record,
+            bool tone,
+            double toneFrequency,
+            double toneAmplitude)
         {
             Wsp = wsp;
             data = new List<byte>();
             waveTones = new List<WaveTone>();
+            if (tone)
+            {
+                waveTones.Add(new WaveTone(
+                        new WaveToneProperties(
+                            Wsp,
+                            toneFrequency,
+                            toneAmplitude)
+                        )
+                    );
+
+            }
             sampleNumber = 0;
             this.userInterfaceForm = userInterfaceForm;
             this.record = record;
@@ -38,7 +56,7 @@ namespace ProtoSynth
         {
             get
             {
-                return new WaveFormat(Wsp.SampleRate, Wsp.BitDepth, Wsp.Channels);
+                return new WaveFormat(Wsp.Cp.SampleRate, Wsp.Cp.BitDepth, Wsp.Cp.Channels);
             }
         }
 
@@ -85,7 +103,7 @@ namespace ProtoSynth
 
         public List<byte> GetData()
         {
-            int length = Wsp.SampleRate * (Wsp.BitDepth / 8) * Wsp.Channels;
+            int length = Wsp.Cp.SampleRate * (Wsp.Cp.BitDepth / 8) * Wsp.Cp.Channels;
             byte[] buffer = new byte[length];
             Read(buffer, 0, length);
             return data;

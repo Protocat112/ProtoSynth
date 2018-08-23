@@ -5,28 +5,34 @@ using System.Windows.Forms;
 
 namespace ProtoSynth
 {
-    static class ProtoSynth
+    public static class ProtoSynth
     {
+        private const int SAMPLE_RATE = 44100;
+        private const int BIT_DEPTH = 16;
+        private const int CHANNELS = 2;
         public enum UserEvent {
             Unset,
             Play,
             SetRecord,
-            UnsetRecord
+            UnsetRecord,
+            SetTone,
+            UnsetTone
         };
-        private const int SAMPLE_RATE = 44100;
-        private const int BIT_DEPTH = 16;
-        private const int CHANNELS = 2;
         private static UserInterfaceForm userInterfaceForm;
         private static WaveStream waveStream;
         private static bool record;
+        private static bool tone;
+        private static bool toneFrequency;
+        private static bool toneAmplitude;
+        public static UserEvent Ue;
 
         internal static void Run()
         {
             // start user interface thread
             EventWaitHandle userEventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            UserInterfaceForm = new UserInterfaceForm(userEventWaitHandle);
+            userInterfaceForm = new UserInterfaceForm(userEventWaitHandle, new ConstantProperties(SAMPLE_RATE, BIT_DEPTH, CHANNELS));
             Thread userInterfaceThread = new Thread(RunUserInterfaceForm);
-            UserEvent userEvent = UserEvent.Unset;
+            Ue = UserEvent.Unset;
             bool exit = false;
             userInterfaceThread.Start();
             // event loop
@@ -34,7 +40,7 @@ namespace ProtoSynth
             {
                 // wait for event signal
                 userEventWaitHandle.WaitOne();
-                switch (userEvent)
+                switch (Ue)
                 {
                     case UserEvent.Unset:
                         throw new Exception("User event unset!");
@@ -47,13 +53,29 @@ namespace ProtoSynth
                     case UserEvent.UnsetRecord:
                         UnsetRecord();
                         break;
+                    case UserEvent.SetTone:
+                        SetTone();
+                        break;
+                    case UserEvent.UnsetTone:
+                        UnsetTone();
+                        break;
                 }
             }
         }
 
+        private static void UnsetTone()
+        {
+            tone = false;
+        }
+
+        private static void SetTone()
+        {
+            tone = true;
+        }
+
         private static void UnsetRecord()
         {
-            throw new NotImplementedException();
+            record = false;
         }
 
         private static void SetRecord()
@@ -63,6 +85,7 @@ namespace ProtoSynth
 
         private static void RunUserInterfaceForm()
         {
+            Application.Run(userInterfaceForm);
             record = false;
         }
 
@@ -70,19 +93,25 @@ namespace ProtoSynth
         {
             waveStream = new WaveStream(
                 new WaveStreamProperties(
-                    SAMPLE_RATE,
-                    BIT_DEPTH,
-                    CHANNELS,
+                    new ConstantProperties(SAMPLE_RATE, BIT_DEPTH, CHANNELS),
                     userInterfaceForm.Multi,
                     userInterfaceForm.Phase,
                     userInterfaceForm.Envelope,
                     userInterfaceForm.WaveType,
                     userInterfaceForm.Distortion),
                 userInterfaceForm,
-                record);
+                record,
+                tone,
+                userInterfaceForm.Frequency,
+                userInterfaceForm.Amplitude);
             DirectSoundOut output = new DirectSoundOut();
             output.Init(waveStream);
             output.Play();
+        }
+
+        internal static void UpdateFrequency(double frequency)
+        {
+            throw new NotImplementedException();
         }
     }
 }

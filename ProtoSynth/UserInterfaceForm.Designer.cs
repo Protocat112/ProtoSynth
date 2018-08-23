@@ -57,6 +57,7 @@
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSequence = new System.Windows.Forms.Button();
+            this.chkTone = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.barVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barMulti)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barPhase)).BeginInit();
@@ -71,7 +72,7 @@
             // lblFrequency
             // 
             this.lblFrequency.AutoSize = true;
-            this.lblFrequency.Location = new System.Drawing.Point(12, 15);
+            this.lblFrequency.Location = new System.Drawing.Point(12, 17);
             this.lblFrequency.Name = "lblFrequency";
             this.lblFrequency.Size = new System.Drawing.Size(60, 13);
             this.lblFrequency.TabIndex = 1;
@@ -81,7 +82,7 @@
             // 
             this.txtFrequency.Location = new System.Drawing.Point(84, 12);
             this.txtFrequency.Name = "txtFrequency";
-            this.txtFrequency.Size = new System.Drawing.Size(137, 20);
+            this.txtFrequency.Size = new System.Drawing.Size(80, 20);
             this.txtFrequency.TabIndex = 2;
             this.txtFrequency.Text = "440";
             this.txtFrequency.TextChanged += new System.EventHandler(this.txtFrequency_TextChanged);
@@ -348,11 +349,23 @@
             this.btnSequence.Text = "Play Sequence";
             this.btnSequence.UseVisualStyleBackColor = true;
             // 
-            // ProtoSynthForm
+            // chkTone
+            // 
+            this.chkTone.AutoSize = true;
+            this.chkTone.Location = new System.Drawing.Point(170, 14);
+            this.chkTone.Name = "chkTone";
+            this.chkTone.Size = new System.Drawing.Size(51, 17);
+            this.chkTone.TabIndex = 107;
+            this.chkTone.Text = "Tone";
+            this.chkTone.UseVisualStyleBackColor = true;
+            this.chkTone.CheckedChanged += new System.EventHandler(this.chkTone_CheckedChanged);
+            // 
+            // UserInterfaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1046, 462);
+            this.Controls.Add(this.chkTone);
             this.Controls.Add(this.btnSequence);
             this.Controls.Add(this.dataNotes);
             this.Controls.Add(this.panWave);
@@ -380,7 +393,7 @@
             this.Controls.Add(this.barVolume);
             this.Controls.Add(this.txtFrequency);
             this.Controls.Add(this.lblFrequency);
-            this.Name = "ProtoSynthForm";
+            this.Name = "UserInterfaceForm";
             this.Text = "ProtoSynth";
             ((System.ComponentModel.ISupportInitialize)(this.barVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barMulti)).EndInit();
@@ -426,6 +439,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.DataGridViewTextBoxColumn Length;
         private System.Windows.Forms.Button btnSequence;
+        private System.Windows.Forms.CheckBox chkTone;
     }
 }
 
