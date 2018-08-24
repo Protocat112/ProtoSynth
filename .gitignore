@@ -1,5 +1,3 @@
-
-.vs/ProtoSynth/DesignTimeBuild/**
-.vs/ProtoSynth/v15/**
-ProtoSynth/bin/**
-ProtoSynth/obj/**
+.vs/
+ProtoSynth/bin/
+ProtoSynth/obj/
