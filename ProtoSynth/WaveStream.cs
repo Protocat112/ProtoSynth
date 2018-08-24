@@ -63,12 +63,12 @@ namespace ProtoSynth
         {
             int samples = count / 2;
             StereoSample stereoSample;
-            double left = 0;
-            double right = 0;
             if (waveTones.Count > 0)
             {
                 for (int i = 0; i < samples; i += 2)
                 {
+                    double left = 0;
+                    double right = 0;
                     foreach (WaveTone waveTone in waveTones)
                     {
                         stereoSample = waveTone.GetNextSample(sampleNumber);
@@ -86,7 +86,7 @@ namespace ProtoSynth
         public void ConvertToByte(byte[] buffer, int i, double left, double right)
         {
             short leftShort = (short)Math.Round(left * (Math.Pow(2, 15) - 1));
-            short rightShort = (short)Math.Round(right * (Math.Pow(2, 15) - 1));
+            short rightShort = (short)Math.Round(right * (Math.Pow(2, 16) - 1));
             buffer[i * 2] = (byte)(leftShort & 0x00ff);
             buffer[i * 2 + 1] = (byte)((leftShort & 0xff00) >> 8);
             buffer[i * 2 + 2] = (byte)(rightShort & 0x00ff);
