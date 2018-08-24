@@ -1,3 +1,9 @@
 .vs/
+.vs/**
 ProtoSynth/bin/
+ProtoSynth/bin/**
 ProtoSynth/obj/
+ProtoSynth/obj/**
+ProtoSynth/obj/
+packages/
+packages/**
