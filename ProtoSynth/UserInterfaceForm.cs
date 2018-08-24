@@ -19,13 +19,10 @@ namespace ProtoSynth
         public double Frequency;
         public int Phase;
         public double Amplitude;
-        private DirectSoundOut output;
-        private BlockAlignReductionStream stream;
         private bool playing;
         public WaveTypes WaveType;
         public int Multi;
         public Envelope Envelope;
-        private WaveStream tone;
         public double Distortion;
         private int sampleNumber;
         private int[] pointsLeft;
@@ -33,7 +30,6 @@ namespace ProtoSynth
         private int[] pointsRight;
         private int[] pointsRightTemp;
         private bool painting;
-        private int offset;
         private EventWaitHandle userEventWaitHandle;
         public bool Record;
         public bool SingleTone;
@@ -47,25 +43,59 @@ namespace ProtoSynth
             {
                 boxWaveType.Items.Add(waveType);
             }
-            Frequency = Convert.ToDouble(txtFrequency.Text);
-            Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
-            output = null;
-            stream = null;
+            UpdateFrequency();
+            UpdateAmplitude();
             playing = false;
-            Multi = barMulti.Value;
+            UpdateMulti();
             Envelope = new Envelope(
-                barAttack.Value * cp.SampleRate / envScale,
-                barDecay.Value * cp.SampleRate / envScale,
-                (double)barSustain.Value / barSustain.Maximum,
-                barRelease.Value * cp.SampleRate / envScale);
-            Distortion = ((double)barDist.Value)/barDist.Maximum;
+                GetAttack(),
+                GetDecay(),
+                GetSustain(),
+                GetRelease());
+            UpdateDistortion();
             pointsLeft = new int[panWave.Width];
             pointsLeftTemp = new int[panWave.Width];
             pointsRight = new int[panWave.Width];
             pointsRightTemp = new int[panWave.Width];
+            SingleTone = chkTone.Checked;
         }
 
-        private void txtFrequency_TextChanged(object sender, EventArgs e)
+        private void UpdateDistortion()
+        {
+            Distortion = (((double)barDist.Value) - 0.01) / barDist.Maximum;
+        }
+
+        private int GetRelease()
+        {
+            return barRelease.Value * cp.SampleRate / envScale;
+        }
+
+        private double GetSustain()
+        {
+            return (double)barSustain.Value / barSustain.Maximum;
+        }
+
+        private int GetDecay()
+        {
+            return barDecay.Value * cp.SampleRate / envScale;
+        }
+
+        private int GetAttack()
+        {
+            return barAttack.Value * cp.SampleRate / envScale;
+        }
+
+        private void UpdateMulti()
+        {
+            Multi = barMulti.Value;
+        }
+
+        private void UpdateAmplitude()
+        {
+            Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
+        }
+
+        private void UpdateFrequency()
         {
             try
             {
@@ -77,42 +107,48 @@ namespace ProtoSynth
             }
         }
 
-        private void barVolume_ValueChanged(object sender, EventArgs e)
+        private void TxtFrequency_TextChanged(object sender, EventArgs e)
         {
-            Amplitude = Convert.ToDouble(barVolume.Value) / barVolume.Maximum;
+            UpdateFrequency();
         }
 
-        private void btnSineBuffer_Click(object sender, EventArgs e)
+        private void BarVolume_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateAmplitude();
+        }
+
+        private void BtnSineBuffer_Click(object sender, EventArgs e)
         {
             if (playing)
             {
-                stop();
+                Stop();
+                
             }
             else
             {
-                ProtoSynth.Ue = UserEvent.Play;
-                userEventWaitHandle.Set();
-                btnSineBuffer.FlatStyle = FlatStyle.Flat;
-                btnSineBuffer.Text = "Pause";
-                playing = true;
+                Play();
             }
         }
 
-        private void ProtoSynth_FormClosing(object sender, FormClosingEventArgs e)
+        private void Play()
         {
-            if (output != null)
-            {
-                output.Dispose();
-                output = null;
-            }
-            if (stream != null)
-            {
-                stream.Dispose();
-                stream = null;
-            }
+            ProtoSynth.Ue = UserEvent.Play;
+            userEventWaitHandle.Set();
+            btnSineBuffer.FlatStyle = FlatStyle.Flat;
+            btnSineBuffer.Text = "Stop";
+            playing = true;
         }
 
-        private void boxWaveType_SelectedIndexChanged(object sender, EventArgs e)
+        private void Stop()
+        {
+            ProtoSynth.Ue = UserEvent.Stop;
+            userEventWaitHandle.Set();
+            btnSineBuffer.FlatStyle = FlatStyle.Standard;
+            btnSineBuffer.Text = "Play";
+            playing = false;
+        }
+
+        private void BoxWaveType_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach (WaveTypes waveType in Enum.GetValues(typeof(WaveTypes)))
             {
@@ -123,7 +159,7 @@ namespace ProtoSynth
             }
         }
 
-        private void btnWrite_Click(object sender, EventArgs e)
+        private void BtnWrite_Click(object sender, EventArgs e)
         {
             /*if (play)
             {
@@ -145,69 +181,67 @@ namespace ProtoSynth
             FileWriter fileWriter = new FileWriter(data.ToArray(), cp.SampleRate, cp.SampleRate);*/
         }
 
-        private void barMulti_Scroll(object sender, EventArgs e)
+        private void BarMulti_Scroll(object sender, EventArgs e)
         {
-            Multi = barMulti.Value;
+            UpdateMulti();
         }
 
-        private void barPhase_Scroll(object sender, EventArgs e)
+        private void BarPhase_Scroll(object sender, EventArgs e)
+        {
+            UpdatePhase();
+        }
+
+        private void UpdatePhase()
         {
             Phase = barPhase.Value;
         }
 
-        private void barAttack_Scroll(object sender, EventArgs e)
+        private void BarAttack_Scroll(object sender, EventArgs e)
         {
-            Envelope.attack = barAttack.Value * cp.SampleRate / envScale;
+            Envelope.attack = GetAttack();
         }
 
-        private void barDecay_Scroll(object sender, EventArgs e)
+        private void BarDecay_Scroll(object sender, EventArgs e)
         {
-            Envelope.decay = barDecay.Value * cp.SampleRate / envScale;
+            Envelope.decay = GetDecay();
         }
 
-        private void barSustain_Scroll(object sender, EventArgs e)
+        private void BarSustain_Scroll(object sender, EventArgs e)
         {
             Envelope.sustain = (double)barSustain.Value / barSustain.Maximum;
         }
 
-        private void barRelease_Scroll(object sender, EventArgs e)
+        private void BarRelease_Scroll(object sender, EventArgs e)
         {
             Envelope.release = barRelease.Value * cp.SampleRate / envScale;
         }
 
-        private void btnRetrigger_Click(object sender, EventArgs e)
+        private void BtnRetrigger_Click(object sender, EventArgs e)
         {
             if (playing)
             {
-                tone.Retrigger();
+                ProtoSynth.Ue = UserEvent.Retrigger;
+                userEventWaitHandle.Set();
             }
         }
 
-        public void stop()
-        {
-            offset = 0;
-            output.Stop();
-            playing = false;
-            btnSineBuffer.FlatStyle = FlatStyle.Standard;
-            btnSineBuffer.Text = "Play";
-        }
-
-        private void btnRelease_Click(object sender, EventArgs e)
+        private void BtnRelease_Click(object sender, EventArgs e)
         {
             if (playing)
             {
-                tone.Release();
+                ProtoSynth.Ue = UserEvent.Release;
+                userEventWaitHandle.Set();
             }
         }
 
-        private void barDist_Scroll(object sender, EventArgs e)
+        private void BarDist_Scroll(object sender, EventArgs e)
         {
-            Distortion = (double)barDist.Value / barDist.Maximum;
+            UpdateDistortion();
         }
 
         public void Draw(int sampleNumber, double left, double right)
         {
-            this.sampleNumber = (sampleNumber - offset) % panWave.Width;
+            this.sampleNumber = (sampleNumber) % panWave.Width;
             if (this.sampleNumber == 0 && !painting)
             {
                 pointsLeftTemp.CopyTo(pointsLeft, 0);
@@ -218,7 +252,7 @@ namespace ProtoSynth
             pointsRightTemp[this.sampleNumber] = Convert.ToInt32((panWave.Size.Height / 4) * (3 - right));
         }
 
-        private void panWave_Paint(object sender, PaintEventArgs e)
+        private void PanWave_Paint(object sender, PaintEventArgs e)
         {
             painting = true;
             for (int i = 0; i < panWave.Width - 1; i++)
@@ -239,7 +273,7 @@ namespace ProtoSynth
             painting = false;
         }
 
-        private void chkTone_CheckedChanged(object sender, EventArgs e)
+        private void ChkTone_CheckedChanged(object sender, EventArgs e)
         {
             SingleTone = chkTone.Checked;
         }
@@ -248,6 +282,11 @@ namespace ProtoSynth
         {
             ProtoSynth.Ue = UserEvent.Close;
             userEventWaitHandle.Set();
+        }
+
+        private void BarVolume_Scroll(object sender, EventArgs e)
+        {
+            UpdateAmplitude();
         }
     }
 }

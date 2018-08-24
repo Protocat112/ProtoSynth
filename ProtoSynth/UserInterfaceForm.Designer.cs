@@ -85,7 +85,7 @@
             this.txtFrequency.Size = new System.Drawing.Size(80, 20);
             this.txtFrequency.TabIndex = 2;
             this.txtFrequency.Text = "440";
-            this.txtFrequency.TextChanged += new System.EventHandler(this.txtFrequency_TextChanged);
+            this.txtFrequency.TextChanged += new System.EventHandler(this.TxtFrequency_TextChanged);
             // 
             // barVolume
             // 
@@ -95,7 +95,8 @@
             this.barVolume.Size = new System.Drawing.Size(45, 420);
             this.barVolume.TabIndex = 3;
             this.barVolume.Value = 1;
-            this.barVolume.ValueChanged += new System.EventHandler(this.barVolume_ValueChanged);
+            this.barVolume.Scroll += new System.EventHandler(this.BarVolume_Scroll);
+            this.barVolume.ValueChanged += new System.EventHandler(this.BarVolume_ValueChanged);
             // 
             // lblVolume
             // 
@@ -114,7 +115,7 @@
             this.btnSineBuffer.TabIndex = 10;
             this.btnSineBuffer.Text = "Play";
             this.btnSineBuffer.UseVisualStyleBackColor = true;
-            this.btnSineBuffer.Click += new System.EventHandler(this.btnSineBuffer_Click);
+            this.btnSineBuffer.Click += new System.EventHandler(this.BtnSineBuffer_Click);
             // 
             // boxWaveType
             // 
@@ -124,7 +125,7 @@
             this.boxWaveType.Size = new System.Drawing.Size(137, 21);
             this.boxWaveType.TabIndex = 11;
             this.boxWaveType.Text = "Select a wave";
-            this.boxWaveType.SelectedIndexChanged += new System.EventHandler(this.boxWaveType_SelectedIndexChanged);
+            this.boxWaveType.SelectedIndexChanged += new System.EventHandler(this.BoxWaveType_SelectedIndexChanged);
             // 
             // lblWaveType
             // 
@@ -143,7 +144,7 @@
             this.btnWrite.TabIndex = 13;
             this.btnWrite.Text = "Write";
             this.btnWrite.UseVisualStyleBackColor = true;
-            this.btnWrite.Click += new System.EventHandler(this.btnWrite_Click);
+            this.btnWrite.Click += new System.EventHandler(this.BtnWrite_Click);
             // 
             // lblMulti
             // 
@@ -163,7 +164,7 @@
             this.barMulti.Size = new System.Drawing.Size(163, 45);
             this.barMulti.TabIndex = 1;
             this.barMulti.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barMulti.Scroll += new System.EventHandler(this.barMulti_Scroll);
+            this.barMulti.Scroll += new System.EventHandler(this.BarMulti_Scroll);
             // 
             // lblPhase
             // 
@@ -183,7 +184,7 @@
             this.barPhase.Size = new System.Drawing.Size(163, 45);
             this.barPhase.TabIndex = 100;
             this.barPhase.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barPhase.Scroll += new System.EventHandler(this.barPhase_Scroll);
+            this.barPhase.Scroll += new System.EventHandler(this.BarPhase_Scroll);
             // 
             // barAttack
             // 
@@ -195,7 +196,7 @@
             this.barAttack.Size = new System.Drawing.Size(45, 134);
             this.barAttack.TabIndex = 101;
             this.barAttack.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barAttack.Scroll += new System.EventHandler(this.barAttack_Scroll);
+            this.barAttack.Scroll += new System.EventHandler(this.BarAttack_Scroll);
             // 
             // barDecay
             // 
@@ -206,7 +207,7 @@
             this.barDecay.Size = new System.Drawing.Size(45, 134);
             this.barDecay.TabIndex = 101;
             this.barDecay.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barDecay.Scroll += new System.EventHandler(this.barDecay_Scroll);
+            this.barDecay.Scroll += new System.EventHandler(this.BarDecay_Scroll);
             // 
             // barSustain
             // 
@@ -218,7 +219,7 @@
             this.barSustain.TabIndex = 101;
             this.barSustain.TickStyle = System.Windows.Forms.TickStyle.None;
             this.barSustain.Value = 100;
-            this.barSustain.Scroll += new System.EventHandler(this.barSustain_Scroll);
+            this.barSustain.Scroll += new System.EventHandler(this.BarSustain_Scroll);
             // 
             // barRelease
             // 
@@ -229,7 +230,7 @@
             this.barRelease.Size = new System.Drawing.Size(45, 134);
             this.barRelease.TabIndex = 101;
             this.barRelease.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barRelease.Scroll += new System.EventHandler(this.barRelease_Scroll);
+            this.barRelease.Scroll += new System.EventHandler(this.BarRelease_Scroll);
             // 
             // lblAttack
             // 
@@ -275,7 +276,7 @@
             this.btnRetrigger.TabIndex = 13;
             this.btnRetrigger.Text = "Retrigger";
             this.btnRetrigger.UseVisualStyleBackColor = true;
-            this.btnRetrigger.Click += new System.EventHandler(this.btnRetrigger_Click);
+            this.btnRetrigger.Click += new System.EventHandler(this.BtnRetrigger_Click);
             // 
             // btnRelease
             // 
@@ -285,7 +286,7 @@
             this.btnRelease.TabIndex = 103;
             this.btnRelease.Text = "Release";
             this.btnRelease.UseVisualStyleBackColor = true;
-            this.btnRelease.Click += new System.EventHandler(this.btnRelease_Click);
+            this.btnRelease.Click += new System.EventHandler(this.BtnRelease_Click);
             // 
             // barDist
             // 
@@ -296,7 +297,7 @@
             this.barDist.Size = new System.Drawing.Size(163, 45);
             this.barDist.TabIndex = 1;
             this.barDist.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.barDist.Scroll += new System.EventHandler(this.barDist_Scroll);
+            this.barDist.Scroll += new System.EventHandler(this.BarDist_Scroll);
             // 
             // lblDist
             // 
@@ -313,7 +314,7 @@
             this.panWave.Name = "panWave";
             this.panWave.Size = new System.Drawing.Size(390, 200);
             this.panWave.TabIndex = 104;
-            this.panWave.Paint += new System.Windows.Forms.PaintEventHandler(this.panWave_Paint);
+            this.panWave.Paint += new System.Windows.Forms.PaintEventHandler(this.PanWave_Paint);
             // 
             // dataNotes
             // 
@@ -352,13 +353,15 @@
             // chkTone
             // 
             this.chkTone.AutoSize = true;
+            this.chkTone.Checked = true;
+            this.chkTone.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkTone.Location = new System.Drawing.Point(170, 14);
             this.chkTone.Name = "chkTone";
             this.chkTone.Size = new System.Drawing.Size(51, 17);
             this.chkTone.TabIndex = 107;
             this.chkTone.Text = "Tone";
             this.chkTone.UseVisualStyleBackColor = true;
-            this.chkTone.CheckedChanged += new System.EventHandler(this.chkTone_CheckedChanged);
+            this.chkTone.CheckedChanged += new System.EventHandler(this.ChkTone_CheckedChanged);
             // 
             // UserInterfaceForm
             // 

@@ -10,6 +10,7 @@ namespace ProtoSynth
         private const int SAMPLE_RATE = 44100;
         private const int BIT_DEPTH = 16;
         private const int CHANNELS = 2;
+
         public enum UserEvent {
             Unset,
             Play,
@@ -17,12 +18,17 @@ namespace ProtoSynth
             UnsetRecord,
             SetTone,
             UnsetTone,
-            Close
+            Close,
+            Stop,
+            Release,
+            Retrigger
         };
+
         private static UserInterfaceForm userInterfaceForm;
         private static WaveStream waveStream;
         private static bool exit;
         public static UserEvent Ue;
+        private static DirectSoundOut output;
 
         internal static void Run()
         {
@@ -45,11 +51,37 @@ namespace ProtoSynth
                     case UserEvent.Play:
                         Play();
                         break;
+                    case UserEvent.Stop:
+                        Stop();
+                        break;
                     case UserEvent.Close:
                         Close();
                         break;
+                    case UserEvent.Retrigger:
+                        Retrigger();
+                        break;
+                    case UserEvent.Release:
+                        Release();
+                        break;
                 }
             }
+        }
+
+        private static void Release()
+        {
+            waveStream.Release();
+        }
+
+        private static void Retrigger()
+        {
+            waveStream.Retrigger();
+        }
+
+        private static void Stop()
+        {
+            output.Stop();
+            output.Dispose();
+            waveStream.Dispose();
         }
 
         private static void Close()
@@ -78,7 +110,7 @@ namespace ProtoSynth
                 userInterfaceForm.SingleTone,
                 userInterfaceForm.Frequency,
                 userInterfaceForm.Amplitude);
-            DirectSoundOut output = new DirectSoundOut();
+            output = new DirectSoundOut();
             output.Init(waveStream);
             output.Play();
         }

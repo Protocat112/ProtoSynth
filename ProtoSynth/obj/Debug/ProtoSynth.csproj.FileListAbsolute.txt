@@ -28,12 +28,6 @@ C:\Users\Proto\Google Drive\Programming Projects\ProtoSynth\ProtoSynth\obj\Debug
 C:\Users\Protocat\Google Drive\Programming Projects\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csprojResolveAssemblyReference.cache
 C:\Users\Protocat\Google Drive\Programming Projects\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.ProtoSynthForm.resources
 C:\Users\Proto\Google Drive\Programming Projects\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.ProtoSynthForm.resources
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csprojAssemblyReference.cache
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.Properties.Resources.resources
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.GenerateResource.cache
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.CoreCompileInputs.cache
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.exe
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.pdb
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\ProtoSynth.exe.config
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\ProtoSynth.exe.manifest
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\ProtoSynth.application
@@ -41,7 +35,13 @@ C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\ProtoSynth.exe
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\ProtoSynth.pdb
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\NAudio.dll
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\bin\Debug\NAudio.xml
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.UserInterfaceForm.resources
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.Properties.Resources.resources
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.GenerateResource.cache
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.CoreCompileInputs.cache
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.exe.manifest
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.application
 C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csproj.CopyComplete
-C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.UserInterfaceForm.resources
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.exe
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.pdb
+C:\Users\uizdg\source\repos\ProtoSynth\ProtoSynth\obj\Debug\ProtoSynth.csprojAssemblyReference.cache
