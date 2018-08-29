@@ -137,6 +137,7 @@ namespace ProtoSynth
             btnSineBuffer.FlatStyle = FlatStyle.Flat;
             btnSineBuffer.Text = "Stop";
             playing = true;
+            KeyPreview = true;
         }
 
         private void Stop()
@@ -146,6 +147,7 @@ namespace ProtoSynth
             btnSineBuffer.FlatStyle = FlatStyle.Standard;
             btnSineBuffer.Text = "Play";
             playing = false;
+            KeyPreview = false;
         }
 
         private void BoxWaveType_SelectedIndexChanged(object sender, EventArgs e)
@@ -287,6 +289,20 @@ namespace ProtoSynth
         private void BarVolume_Scroll(object sender, EventArgs e)
         {
             UpdateAmplitude();
+        }
+
+        private void UserInterfaceForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            ProtoSynth.KeyDown = e.KeyCode;
+            Ue = UserEvent.KeyDown;
+            userEventWaitHandle.Set();
+        }
+
+        private void UserInterfaceForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            ProtoSynth.KeyUp = e.KeyCode;
+            Ue = UserEvent.KeyUp;
+            userEventWaitHandle.Set();
         }
     }
 }

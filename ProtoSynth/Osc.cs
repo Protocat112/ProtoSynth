@@ -16,8 +16,9 @@ namespace ProtoSynth
         private double releaseEnvf;
         private bool release;
         private int releaseSample;
+        private WaveTone waveTone;
 
-        public Osc(int sampleRate, double frequency, double amplitude, Envelope env, WaveTypes waveType)
+        public Osc(WaveTone waveTone, int sampleRate, double frequency, double amplitude, Envelope env, WaveTypes waveType)
         {
             this.frequency = frequency;
             this.sampleRate = sampleRate;
@@ -25,6 +26,7 @@ namespace ProtoSynth
             this.env = env;
             this.waveType = waveType;
             samplesPerOsc = sampleRate / frequency;
+            this.waveTone = waveTone;
         }
 
         public double GetNextSample(int sample)
@@ -77,6 +79,7 @@ namespace ProtoSynth
                 else
                 {
                     envf = 0;
+                    waveTone.RemoveTone();
                 }
             }
             else

@@ -28,7 +28,8 @@ namespace ProtoSynth
             if (tone)
             {
                 waveTones.Add(new WaveTone(
-                        new WaveToneProperties(
+                    this,
+                    new WaveToneProperties(
                             Wsp,
                             toneFrequency,
                             toneAmplitude)
@@ -65,11 +66,16 @@ namespace ProtoSynth
             StereoSample stereoSample;
             if (waveTones.Count > 0)
             {
+                List<WaveTone> tempWaveTones = new List<WaveTone>();
+                foreach (WaveTone waveTone in waveTones)
+                {
+                    tempWaveTones.Add(waveTone); 
+                }
                 for (int i = 0; i < samples; i += 2)
                 {
                     double left = 0;
                     double right = 0;
-                    foreach (WaveTone waveTone in waveTones)
+                    foreach (WaveTone waveTone in tempWaveTones)
                     {
                         stereoSample = waveTone.GetNextSample(sampleNumber);
                         left += stereoSample.Left;
@@ -86,7 +92,7 @@ namespace ProtoSynth
         public void ConvertToByte(byte[] buffer, int i, double left, double right)
         {
             short leftShort = (short)Math.Round(left * (Math.Pow(2, 15) - 1));
-            short rightShort = (short)Math.Round(right * (Math.Pow(2, 16) - 1));
+            short rightShort = (short)Math.Round(right * (Math.Pow(2, 15) - 1));
             buffer[i * 2] = (byte)(leftShort & 0x00ff);
             buffer[i * 2 + 1] = (byte)((leftShort & 0xff00) >> 8);
             buffer[i * 2 + 2] = (byte)(rightShort & 0x00ff);
@@ -98,6 +104,29 @@ namespace ProtoSynth
                     data.Add(buffer[i * 2 + j]);
                 }
             }
+        }
+
+        internal void ReleaseTone(double frequency)
+        {
+            waveTones.Find(x => x.Wtp.Frequency == frequency).Release(sampleNumber);
+        }
+
+        internal void RemoveTone(WaveTone waveTone)
+        {
+            waveTones.Remove(waveTone);
+        }
+
+        internal void AddTone(double frequency, double amplitude)
+        {
+            waveTones.RemoveAll(x => x.Wtp.Frequency == frequency);
+            waveTones.Add(new WaveTone(
+                this,
+                new WaveToneProperties(
+                    Wsp,
+                    frequency,
+                    amplitude)
+                )
+            );
         }
 
         public List<byte> GetData()

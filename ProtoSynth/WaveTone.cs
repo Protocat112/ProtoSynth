@@ -13,11 +13,14 @@ namespace ProtoSynth
         private Osc osc2;
         private Osc oscLeft;
         private Osc oscRight;
+        private WaveStream waveStream;
 
-        public WaveTone(WaveToneProperties waveToneProperties)
+        public WaveTone(WaveStream waveStream, WaveToneProperties waveToneProperties)
         {
+            this.waveStream = waveStream;
             Wtp = waveToneProperties;
             osc0 = new Osc(
+                this,
                 Wtp.Wsp.Cp.SampleRate,
                 Wtp.Frequency,
                 Wtp.Amplitude,
@@ -26,12 +29,14 @@ namespace ProtoSynth
             if (Wtp.Wsp.Phase > 0)
             {
                 oscLeft = new Osc(
+                    this,
                     Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency + Wtp.Wsp.Phase / 100,
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,
                     Wtp.Wsp.WaveType);
                 oscRight = new Osc(
+                    this,
                     Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency - Wtp.Wsp.Phase / 100,
                     Wtp.Amplitude,
@@ -41,12 +46,14 @@ namespace ProtoSynth
             if (Wtp.Wsp.Multi > 0)
             {
                 osc1 = new Osc(
+                    this,
                     Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency * ((15 + (Wtp.Wsp.Phase / 100)) / 15),
                     Wtp.Amplitude,
                     Wtp.Wsp.Envelope,
                     Wtp.Wsp.WaveType);
                 osc2 = new Osc(
+                    this,
                     Wtp.Wsp.Cp.SampleRate,
                     Wtp.Frequency * ((16 - (Wtp.Wsp.Phase / 100)) / 16),
                     Wtp.Amplitude,
@@ -94,6 +101,11 @@ namespace ProtoSynth
             }
             right = right * (1 / (1 - Wtp.Wsp.Distortion));
             return new StereoSample(left, right);
+        }
+
+        internal void RemoveTone()
+        {
+            waveStream.RemoveTone(this);
         }
 
         public void Retrigger()

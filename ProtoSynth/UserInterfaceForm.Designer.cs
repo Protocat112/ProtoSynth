@@ -353,8 +353,6 @@
             // chkTone
             // 
             this.chkTone.AutoSize = true;
-            this.chkTone.Checked = true;
-            this.chkTone.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkTone.Location = new System.Drawing.Point(170, 14);
             this.chkTone.Name = "chkTone";
             this.chkTone.Size = new System.Drawing.Size(51, 17);
@@ -399,6 +397,8 @@
             this.Name = "UserInterfaceForm";
             this.Text = "ProtoSynth";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserInterfaceForm_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UserInterfaceForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.UserInterfaceForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.barVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barMulti)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barPhase)).EndInit();
